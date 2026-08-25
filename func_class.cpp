@@ -2,6 +2,7 @@
 #include "func_class.h"
 #include <iostream>
 #include <ctime>
+#include <vector>
 
 
 Func_class::Func_class(QObject *parent)
@@ -22,7 +23,6 @@ QVector<QString> Func_class::get_events() {
     QVector<QString> vect;
     vect.append(QString::fromStdString(hello));
     vect.append(QString::fromStdString(hi));
-
     return vect;
 }
 
@@ -54,4 +54,39 @@ int Func_class::number_of_days_before_holiday() {
     double differnce = std::difftime(t_end, t);
     int days_before = round(differnce / 86400);
     return days_before;
+}
+
+QVector<Holiday> Func_class::get_all_holidays() {
+    QVector<Holiday> holidays;
+    holidays.push_back(Holiday{QString::fromStdString("Halloween"), 19, 10, 2026});
+    QVector<Holiday> holidays_filtered;
+    for (int i = 0; i < holidays.size(); i++) {
+        holidays_filtered.push_back(holidays[i]);
+    }
+    return holidays_filtered;
+}
+
+QString Func_class::name_holiday(Holiday holiday) {
+    return holiday.name;
+}
+
+QVector<QString> Func_class::name_holiday_2() {
+    QVector<Holiday> holidays = get_all_holidays();
+    QVector<QString> names;
+    for (int i = 0; i < holidays.size(); i++) {
+        names.push_back(holidays[i].name);
+    }
+    return names;
+}
+
+int Func_class::day_holiday(Holiday holiday) {
+    return holiday.day;
+}
+
+int Func_class::month_holiday(Holiday holiday) {
+    return holiday.month;
+}
+
+int Func_class::year_holiday(Holiday holiday) {
+    return holiday.year;
 }

@@ -17,6 +17,17 @@ Kirigami.ApplicationWindow {
         id: functions
     }
 
+    ListModel {
+        id: categoriesModel
+
+        ListElement {
+            categoryName: "Stuff"
+            // Nested model definition
+            items: []
+        }
+
+    }
+
     property int month: nullptr
     property int dayofweek: nullptr
 
@@ -42,6 +53,8 @@ Kirigami.ApplicationWindow {
 
     }
 
+
+    //property Holiday holida: nullptr
 
     function get_dayofweek() {
         dayofweek = functions.dayOfWeek();
@@ -157,9 +170,10 @@ Kirigami.ApplicationWindow {
             ColumnLayout {
                 id: col_lay
                 Repeater {
-                    model: functions.get_events();
+                    model: functions.name_holiday_2();
 
                     Kirigami.SubtitleDelegate {
+
                         text: modelData
                         Layout.fillWidth: true
 
