@@ -3,7 +3,25 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
+std::string readFileContents(const std::string& filePath) {
+    std::ifstream file(filePath);
+
+    // Check if the file was successfully opened
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filePath << std::endl;
+        return "";
+    }
+
+    // Read the file's buffer into a stringstream
+    std::ostringstream buffer;
+    buffer << file.rdbuf();
+
+    // Convert the stringstream buffer to a std::string
+    return buffer.str();
+}
 
 Func_class::Func_class(QObject *parent)
     : QObject{parent}
@@ -89,4 +107,8 @@ int Func_class::month_holiday(Holiday holiday) {
 
 int Func_class::year_holiday(Holiday holiday) {
     return holiday.year;
+}
+
+QString Func_class::get_json_of_all_holidays() {
+    return QString::fromStdString(readFileContents("example.txt"));
 }

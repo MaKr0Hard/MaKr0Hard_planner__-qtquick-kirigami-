@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15 as Controls
+import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 import MaKrodule 1.0
 
@@ -26,6 +26,20 @@ Kirigami.ApplicationWindow {
             items: []
         }
 
+    }
+
+    function sortListModel(model, parameter) {
+        var items = [];
+        for (var i = 0; i < model.count; i++) {
+            items.push(model.get(i));
+        }
+
+        items.sort((a, b) => (a[parameter] > b[parameter]) ? 1 : -1);
+
+        model.clear();
+        for (var j = 0; j < items.length; j++) {
+            model.append(items[j]);
+        }
     }
 
     property int month: nullptr
@@ -139,17 +153,33 @@ Kirigami.ApplicationWindow {
                                 text: get_month()
                             }
                         }
+
                     }
                     Kirigami.AbstractCard {
+                        showClickFeedback: true
+                        Component.onCompleted: {
+                                var jsonString = functions.get_json_of_all_holidays();
+
+                                var items = JSON.parse(jsonString);
+                                label_hol_name.text = items[0].name
+
+                            }
                         contentItem: ColumnLayout {
-                            Controls.Label {
-                                text: "Days until next holiday"
+                            RowLayout{
+                                Controls.Label {
+                                    text: "Days until"
+                                }
+                                Controls.Label {
+                                    id: label_hol_name
+                                }
                             }
                             Controls.Label {
+                                id: label_days_before
                                 text: functions.number_of_days_before_holiday();
                                 font.pixelSize: 36;
                             }
                         }
+                        onClicked: {pageStack.layers.push(more_holidays)}
                     }
                 }
 
@@ -163,23 +193,60 @@ Kirigami.ApplicationWindow {
         id: plannerPage
         Kirigami.ScrollablePage {
             //title: "Planner"
-            Controls.Label {
+
+            /*Controls.Label {
                 //anchors.centerIn: parent
                 text: "No Alarms Set"
-            }
+            }*/
             ColumnLayout {
                 id: col_lay
-                Repeater {
-                    model: functions.name_holiday_2();
+                ListModel {
+                    id: dataModel
+                }
+                anchors.fill: parent
+                Component.onCompleted: {
+                        var jsonString = functions.get_json_of_all_holidays();
 
-                    Kirigami.SubtitleDelegate {
+                        var items = JSON.parse(jsonString)
 
-                        text: modelData
+                        items.sort((a, b) => (a[timestamp] > b[timestamp]) ? 1 : -1);// remove this if not wotk
+
+                        // Populate the ListModel
+                        for (var i = 0; i < items.length; i++) {//TODO: fix
+                            dataModel.append(items[i])
+                        }
+                    }
+                ListView {
+
+                    anchors.fill: parent
+                    spacing: 5
+                    model: dataModel
+                    delegate:
+
+                    Kirigami.Card {
+                        padding: 5
                         Layout.fillWidth: true
 
-                        onClicked: console.log(text + " clicked!")
+
+                        contentItem: ColumnLayout{
+                            Layout.fillWidth: true
+                            Controls.Label {
+                                text: model.name
+                            }
+
+                            Controls.Label {
+                                text: model.description
+                            }
+                        }
+
+
+                        showClickFeedback: true
                     }
+
                 }
+
+
+
             }
         }
     }
@@ -212,5 +279,51 @@ Kirigami.ApplicationWindow {
         }
     }
 
+    Component {
+        id: more_holidays
+        Kirigami.ScrollablePage {
+            ColumnLayout {
+                anchors.fill: parent
+
+
+                ListModel {
+                    id: listModel_more_holid
+
+                }
+                Component.onCompleted: {
+                        var jsonString = functions.get_json_of_all_holidays();
+
+                        var items = JSON.parse(jsonString)
+
+                        // Populate the ListModel
+                        for (var i = 0; i < items.length; i++) {
+                            listModel_more_holid.append(items[i])
+                        }
+                    }
+                ListView {
+                    anchors.fill: parent
+                    model: listModel_more_holid
+                    spacing: 5
+                    delegate:
+                    Kirigami.AbstractCard {
+                        padding: 5
+                        Layout.fillWidth: true
+
+
+                        contentItem: ColumnLayout{
+                            Layout.fillWidth: true
+                            Controls.Label {
+                                text: model.name
+                            }
+
+                            Controls.Label {
+                                text: model.description
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }
