@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE int year_holiday(Holiday holiday);
     Q_INVOKABLE QVector<QString> name_holiday_2();
     Q_INVOKABLE QString get_json_of_all_holidays();
+    Q_INVOKABLE QString get_json_elements();
 //signals:
 
 };

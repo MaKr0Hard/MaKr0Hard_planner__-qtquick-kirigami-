@@ -2,9 +2,10 @@
 #include "func_class.h"
 #include <iostream>
 #include <ctime>
-#include <vector>
+//#include <vector>
 #include <fstream>
 #include <sstream>
+#include <nlohmann/json.hpp>
 
 std::string readFileContents(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -74,7 +75,7 @@ int Func_class::number_of_days_before_holiday() {
     return days_before;
 }
 
-QVector<Holiday> Func_class::get_all_holidays() {
+QVector<Holiday> Func_class::get_all_holidays() {//TODO: delete ?
     QVector<Holiday> holidays;
     holidays.push_back(Holiday{QString::fromStdString("Halloween"), 19, 10, 2026});
     QVector<Holiday> holidays_filtered;
@@ -111,4 +112,15 @@ int Func_class::year_holiday(Holiday holiday) {
 
 QString Func_class::get_json_of_all_holidays() {
     return QString::fromStdString(readFileContents("example.txt"));
+}
+
+QString Func_class::get_json_elements() {//TODO: rename
+    std::string json = readFileContents("example.txt");
+
+    nlohmann::json j = nlohmann::json::parse(json);
+    std::sort(j.begin(), j.end(), [](const nlohmann::json& a, const nlohmann::json& b) {
+        return a["timestamp"] < b["timestamp"];
+    });
+    std::string output = j.dump();
+    return QString::fromStdString(output);//TODO: use the json string instead to not waste ram
 }

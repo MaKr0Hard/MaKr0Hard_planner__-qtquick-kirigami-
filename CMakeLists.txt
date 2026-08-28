@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 find_package(ECM 6.0.0 REQUIRED NO_MODULE)
+find_package(nlohmann_json 3.12.0 REQUIRED)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
@@ -82,7 +83,7 @@ target_link_libraries(appMaKr0Hard_Planner_4
     KF6::IconThemes
     Qt6::Widgets
 )
-
+target_link_libraries(appMaKr0Hard_Planner_4 PRIVATE nlohmann_json::nlohmann_json)
 
 
 install(TARGETS appMaKr0Hard_Planner_4

@@ -205,14 +205,14 @@ Kirigami.ApplicationWindow {
                 }
                 anchors.fill: parent
                 Component.onCompleted: {
-                        var jsonString = functions.get_json_of_all_holidays();
+                        var jsonString = functions.get_json_elements();
 
                         var items = JSON.parse(jsonString)
 
-                        items.sort((a, b) => (a[timestamp] > b[timestamp]) ? 1 : -1);// remove this if not wotk
 
-                        // Populate the ListModel
-                        for (var i = 0; i < items.length; i++) {//TODO: fix
+
+
+                        for (var i = 0; i < items.length; i++) {//TODO: fix FIXED !! //TODO: now all the others
                             dataModel.append(items[i])
                         }
                     }
