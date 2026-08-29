@@ -158,7 +158,7 @@ Kirigami.ApplicationWindow {
                     Kirigami.AbstractCard {
                         showClickFeedback: true
                         Component.onCompleted: {
-                                var jsonString = functions.get_json_of_all_holidays();
+                                var jsonString = functions.get_json_elements();
 
                                 var items = JSON.parse(jsonString);
                                 label_hol_name.text = items[0].name
@@ -291,7 +291,7 @@ Kirigami.ApplicationWindow {
 
                 }
                 Component.onCompleted: {
-                        var jsonString = functions.get_json_of_all_holidays();
+                        var jsonString = functions.get_json_elements();
 
                         var items = JSON.parse(jsonString)
 
