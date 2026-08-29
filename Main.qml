@@ -284,8 +284,6 @@ Kirigami.ApplicationWindow {
         Kirigami.ScrollablePage {
             ColumnLayout {
                 anchors.fill: parent
-
-
                 ListModel {
                     id: listModel_more_holid
 
