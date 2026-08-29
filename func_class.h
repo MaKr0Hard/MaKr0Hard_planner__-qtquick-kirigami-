@@ -33,8 +33,14 @@ public:
     Q_INVOKABLE QVector<QString> name_holiday_2();
     Q_INVOKABLE QString get_json_of_all_holidays();
     Q_INVOKABLE QString get_json_elements();
+    Q_INVOKABLE int day_from_timestamp(long timestamp);
+    Q_INVOKABLE int month_from_timestamp(long timestamp);
+    Q_INVOKABLE int year_from_timestamp(long timestamp);
+    Q_INVOKABLE void save_to_json(QString name, long timestamp, QString description);
 //signals:
 
+private:
+    void write_to_file(std::string filename, std::string stuff);
 };
 
 #endif // FUNC_CLASS_H

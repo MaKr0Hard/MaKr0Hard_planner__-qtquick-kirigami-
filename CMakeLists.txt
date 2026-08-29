@@ -55,9 +55,11 @@ qt_add_qml_module(appMaKr0Hard_Planner_4
     URI MaKr0Hard_Planner_4
     QML_FILES
         Main.qml
-        SOURCES func_class.h func_class.cpp
+        SOURCES func_class.h func_class.cpp example.txt
         RESOURCES LICENSE
         RESOURCES README.md
+        RESOURCES
+
 )
 
 
@@ -71,6 +73,12 @@ set_target_properties(appMaKr0Hard_Planner_4 PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/example.txt
+    ${CMAKE_BINARY_DIR}/bin/example.txt
+    COPYONLY
 )
 
 target_link_libraries(appMaKr0Hard_Planner_4
@@ -91,3 +99,5 @@ install(TARGETS appMaKr0Hard_Planner_4
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+

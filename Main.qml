@@ -288,6 +288,18 @@ Kirigami.ApplicationWindow {
                     id: listModel_more_holid
 
                 }
+                function update_list() {
+
+                    var jsonString = functions.get_json_elements();
+
+                    var items = JSON.parse(jsonString);
+
+                    // Populate the ListModel
+                    for (var i = 0; i < items.length; i++) {
+                        listModel_more_holid.append(items[i])
+                    }
+                }
+
                 Component.onCompleted: {
                         var jsonString = functions.get_json_elements();
 
@@ -317,6 +329,23 @@ Kirigami.ApplicationWindow {
                             Controls.Label {
                                 text: model.description
                             }
+                            Controls.Label {
+                                text: functions.day_from_timestamp(model.timestamp) + "/" + functions.month_from_timestamp(model.timestamp) + "/" + functions.year_from_timestamp(model.timestamp);
+                            }
+                        }
+
+                    }
+                }
+                Controls.Button {
+                    text: "pls clk"
+                    onClicked: {functions.save_to_json("hii", 50, "hiiii");
+                        var jsonString = functions.get_json_elements();
+
+                        var items = JSON.parse(jsonString);
+                        listModel_more_holid.clear();
+                        // Populate the ListModel
+                        for (var i = 0; i < items.length; i++) {
+                            listModel_more_holid.append(items[i])
                         }
                     }
                 }

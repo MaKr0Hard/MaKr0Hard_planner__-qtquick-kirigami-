@@ -19,7 +19,7 @@ std::string readFileContents(const std::string& filePath) {
     // Read the file's buffer into a stringstream
     std::ostringstream buffer;
     buffer << file.rdbuf();
-
+    file.close();
     // Convert the stringstream buffer to a std::string
     return buffer.str();
 }
@@ -75,6 +75,28 @@ int Func_class::number_of_days_before_holiday() {
     return days_before;
 }
 
+int Func_class::month_from_timestamp(long timestamp) {
+    std::time_t t = static_cast<std::time_t>(timestamp);
+    std::tm *tm = std::localtime(&t);
+    int month = tm->tm_mon + 1;    //TODO: maybe delete thattt it takes some xtra cpu instructions
+    return month;
+}
+
+int Func_class::day_from_timestamp(long timestamp) {
+    std::time_t t = static_cast<std::time_t>(timestamp);
+    std::tm *tm = std::localtime(&t);
+    int day = tm->tm_mday; //TODO: maybe delete thattt it takes some xtra cpu instructions
+    return day;
+}
+
+
+int Func_class::year_from_timestamp(long timestamp) {
+    std::time_t t = static_cast<std::time_t>(timestamp);
+    std::tm *tm = std::localtime(&t);
+    int year = tm->tm_year + 1900;    //TODO: maybe delete thattt it takes some xtra cpu instructions
+    return year;
+}
+
 QVector<Holiday> Func_class::get_all_holidays() {//TODO: delete ?
     QVector<Holiday> holidays;
     holidays.push_back(Holiday{QString::fromStdString("Halloween"), 19, 10, 2026});
@@ -123,4 +145,43 @@ QString Func_class::get_json_elements() {//TODO: rename
     });
     std::string output = j.dump();
     return QString::fromStdString(output);//TODO: use the json string instead to not waste ram
+}
+
+void Func_class::save_to_json(QString name, long timestamp, QString description) {
+    nlohmann::json json = nlohmann::json::parse(readFileContents("example.txt"));
+    nlohmann::json newElement = {
+        {"name", name.toStdString()},
+        {"timestamp", timestamp},
+        {"description", description.toStdString()}
+    };
+
+    // Add the new element to the array
+    json.push_back(newElement);
+
+    // Print the updated JSON
+    std::cout << json.dump(4) << std::endl;
+    write_to_file("example.txt", json.dump(4));
+}
+
+void Func_class::write_to_file(std::string filename, std::string stuff) {
+
+
+    // Open the file in output mode (default: std::ios::out)
+    // This will create the file if it doesn't exist or overwrite it if it does.
+    std::ofstream outFile(filename);
+
+    // Check if the file was opened successfully
+    if (!outFile) {
+        std::cerr << "Error: Could not open or create file " << filename << std::endl;
+        return;
+    }
+
+    // Write data to the file
+    outFile << stuff << std::endl;
+
+    // Close the file (optional but good practice)
+    outFile.close();
+
+    std::cout << "File " << filename << " has been created or overwritten." << std::endl;
+    return;
 }
