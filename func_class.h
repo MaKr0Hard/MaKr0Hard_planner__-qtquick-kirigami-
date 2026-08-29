@@ -32,11 +32,13 @@ public:
     Q_INVOKABLE int year_holiday(Holiday holiday);
     Q_INVOKABLE QVector<QString> name_holiday_2();
     Q_INVOKABLE QString get_json_of_all_holidays();
-    Q_INVOKABLE QString get_json_elements();
+    Q_INVOKABLE QString get_json_elements(QString filename);
     Q_INVOKABLE int day_from_timestamp(long timestamp);
     Q_INVOKABLE int month_from_timestamp(long timestamp);
     Q_INVOKABLE int year_from_timestamp(long timestamp);
-    Q_INVOKABLE void save_to_json(QString name, long timestamp, QString description);
+    Q_INVOKABLE void save_to_json(QString name, long timestamp, QString description, QString filename);
+    Q_INVOKABLE void save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study);
+    Q_INVOKABLE int number_of_days_before_timestamp(long timestamp);
 //signals:
 
 private:

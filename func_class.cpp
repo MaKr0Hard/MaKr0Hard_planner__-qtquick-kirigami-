@@ -75,6 +75,15 @@ int Func_class::number_of_days_before_holiday() {
     return days_before;
 }
 
+int Func_class::number_of_days_before_timestamp(long timestamp) {
+    std::time_t t = std::time(nullptr);
+
+    std::time_t t_end = static_cast<std::time_t>(timestamp);
+    double differnce = std::difftime(t_end, t);
+    int days_before = round(differnce / 86400);
+    return days_before;
+}
+
 int Func_class::month_from_timestamp(long timestamp) {
     std::time_t t = static_cast<std::time_t>(timestamp);
     std::tm *tm = std::localtime(&t);
@@ -111,7 +120,7 @@ QString Func_class::name_holiday(Holiday holiday) {
     return holiday.name;
 }
 
-QVector<QString> Func_class::name_holiday_2() {
+QVector<QString> Func_class::name_holiday_2() {//TODO: delete ?
     QVector<Holiday> holidays = get_all_holidays();
     QVector<QString> names;
     for (int i = 0; i < holidays.size(); i++) {
@@ -133,11 +142,11 @@ int Func_class::year_holiday(Holiday holiday) {
 }
 
 QString Func_class::get_json_of_all_holidays() {
-    return QString::fromStdString(readFileContents("example.txt"));
+    return QString::fromStdString(readFileContents("holidays.txt"));
 }
 
-QString Func_class::get_json_elements() {//TODO: rename
-    std::string json = readFileContents("example.txt");
+QString Func_class::get_json_elements(QString filename) {//TODO: rename
+    std::string json = readFileContents(filename.toStdString());
 
     nlohmann::json j = nlohmann::json::parse(json);
     std::sort(j.begin(), j.end(), [](const nlohmann::json& a, const nlohmann::json& b) {
@@ -147,8 +156,8 @@ QString Func_class::get_json_elements() {//TODO: rename
     return QString::fromStdString(output);//TODO: use the json string instead to not waste ram
 }
 
-void Func_class::save_to_json(QString name, long timestamp, QString description) {
-    nlohmann::json json = nlohmann::json::parse(readFileContents("example.txt"));
+void Func_class::save_to_json(QString name, long timestamp, QString description, QString filename) {//TODO: rename
+    nlohmann::json json = nlohmann::json::parse(readFileContents(filename.toStdString()));
     nlohmann::json newElement = {
         {"name", name.toStdString()},
         {"timestamp", timestamp},
@@ -160,7 +169,27 @@ void Func_class::save_to_json(QString name, long timestamp, QString description)
 
     // Print the updated JSON
     std::cout << json.dump(4) << std::endl;
-    write_to_file("example.txt", json.dump(4));
+    write_to_file(filename.toStdString(), json.dump(4));
+}
+
+void Func_class::save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study) {
+    QString filename = QString::fromStdString("planner.txt");
+    nlohmann::json json = nlohmann::json::parse(readFileContents(filename.toStdString()));
+    nlohmann::json newElement = {
+        {"name", name.toStdString()},
+        {"timestamp", timestamp},
+        {"description", description.toStdString()},
+        {"priority", priority},
+        {"subject", subject.toStdString()},
+        {"time_needed", time_needed_to_study},
+    };
+
+    // Add the new element to the array
+    json.push_back(newElement);
+
+    // Print the updated JSON
+    std::cout << json.dump(4) << std::endl;
+    write_to_file(filename.toStdString(), json.dump(4));
 }
 
 void Func_class::write_to_file(std::string filename, std::string stuff) {

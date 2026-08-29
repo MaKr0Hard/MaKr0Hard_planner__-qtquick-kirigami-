@@ -1,0 +1,12 @@
+[
+    {
+        "description": "Halloween vacation",
+        "name": "Halloween vacation",
+        "timestamp": 1792368000
+    },
+    {
+        "description": "December vacation",
+        "name": "December vacation",
+        "timestamp": 1797811200
+    }
+]

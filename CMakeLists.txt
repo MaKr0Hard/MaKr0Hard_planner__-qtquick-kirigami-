@@ -55,10 +55,11 @@ qt_add_qml_module(appMaKr0Hard_Planner_4
     URI MaKr0Hard_Planner_4
     QML_FILES
         Main.qml
-        SOURCES func_class.h func_class.cpp example.txt
+        SOURCES func_class.h func_class.cpp
         RESOURCES LICENSE
         RESOURCES README.md
-        RESOURCES
+
+
 
 )
 
@@ -76,8 +77,20 @@ set_target_properties(appMaKr0Hard_Planner_4 PROPERTIES
 )
 
 configure_file(
-    ${CMAKE_SOURCE_DIR}/example.txt
-    ${CMAKE_BINARY_DIR}/bin/example.txt
+    ${CMAKE_SOURCE_DIR}/holidays.txt
+    ${CMAKE_BINARY_DIR}/bin/holidays.txt
+    COPYONLY
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/school_diary.txt
+    ${CMAKE_BINARY_DIR}/bin/school_diary.txt
+    COPYONLY
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/planner.txt
+    ${CMAKE_BINARY_DIR}/bin/planner.txt
     COPYONLY
 )
 

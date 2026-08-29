@@ -109,6 +109,11 @@ Kirigami.ApplicationWindow {
                 onTriggered: pageStack.layers.replace(plannerPage)
             },
             Kirigami.Action {
+                text: "School diary"
+                icon.name: "book"
+                onTriggered: pageStack.layers.replace(schoolDiary)
+            },
+            Kirigami.Action {
                 text: "More"
                 icon.name: "chronometer"
                 onTriggered: pageStack.layers.replace(morePage)
@@ -158,11 +163,11 @@ Kirigami.ApplicationWindow {
                     Kirigami.AbstractCard {
                         showClickFeedback: true
                         Component.onCompleted: {
-                                var jsonString = functions.get_json_elements();
+                                var jsonString = functions.get_json_elements("holidays.txt");
 
                                 var items = JSON.parse(jsonString);
-                                label_hol_name.text = items[0].name
-
+                                label_hol_name.text = items[0].name;
+                                label_days_before.text = functions.number_of_days_before_timestamp(items[0].timestamp);
                             }
                         contentItem: ColumnLayout {
                             RowLayout{
@@ -175,7 +180,6 @@ Kirigami.ApplicationWindow {
                             }
                             Controls.Label {
                                 id: label_days_before
-                                text: functions.number_of_days_before_holiday();
                                 font.pixelSize: 36;
                             }
                         }
@@ -185,6 +189,13 @@ Kirigami.ApplicationWindow {
 
             }
 
+
+        }
+    }
+
+    Component {
+        id: schoolDiary
+        Kirigami.ScrollablePage {
 
         }
     }
@@ -205,7 +216,7 @@ Kirigami.ApplicationWindow {
                 }
                 anchors.fill: parent
                 Component.onCompleted: {
-                        var jsonString = functions.get_json_elements();
+                        var jsonString = functions.get_json_elements("holidays.txt");
 
                         var items = JSON.parse(jsonString)
 
@@ -290,7 +301,7 @@ Kirigami.ApplicationWindow {
                 }
                 function update_list() {
 
-                    var jsonString = functions.get_json_elements();
+                    var jsonString = functions.get_json_elements("holidays.txt");
 
                     var items = JSON.parse(jsonString);
 
@@ -301,7 +312,7 @@ Kirigami.ApplicationWindow {
                 }
 
                 Component.onCompleted: {
-                        var jsonString = functions.get_json_elements();
+                        var jsonString = functions.get_json_elements("holidays.txt");
 
                         var items = JSON.parse(jsonString)
 
@@ -329,17 +340,26 @@ Kirigami.ApplicationWindow {
                             Controls.Label {
                                 text: model.description
                             }
-                            Controls.Label {
-                                text: functions.day_from_timestamp(model.timestamp) + "/" + functions.month_from_timestamp(model.timestamp) + "/" + functions.year_from_timestamp(model.timestamp);
+                            RowLayout {
+                                Layout.fillWidth: true
+                                Controls.Label {
+                                    text: functions.day_from_timestamp(model.timestamp) + "/" + functions.month_from_timestamp(model.timestamp) + "/" + functions.year_from_timestamp(model.timestamp);
+                                    anchors.left: parent
+                                }
+                                Controls.Label {
+                                    text: functions.number_of_days_before_timestamp(model.timestamp);
+                                    anchors.right: parent
+                                }
                             }
+
                         }
 
                     }
                 }
                 Controls.Button {
                     text: "pls clk"
-                    onClicked: {functions.save_to_json("hii", 50, "hiiii");
-                        var jsonString = functions.get_json_elements();
+                    onClicked: {functions.save_to_json("hii", 50, "hiiii", "holidays.txt");
+                        var jsonString = functions.get_json_elements("holidays.txt");
 
                         var items = JSON.parse(jsonString);
                         listModel_more_holid.clear();
