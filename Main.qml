@@ -115,7 +115,7 @@ Kirigami.ApplicationWindow {
             },
             Kirigami.Action {
                 text: "More"
-                icon.name: "chronometer"
+                icon.name: "open-menu"
                 onTriggered: pageStack.layers.replace(morePage)
             }
         ]
