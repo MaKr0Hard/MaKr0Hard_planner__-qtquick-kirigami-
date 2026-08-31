@@ -110,7 +110,7 @@ Kirigami.ApplicationWindow {
             },
             Kirigami.Action {
                 text: "School diary"
-                icon.name: "book"
+                icon.name: "bookmarks"
                 onTriggered: pageStack.layers.replace(schoolDiary)
             },
             Kirigami.Action {
