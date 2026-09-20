@@ -24,15 +24,28 @@ if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/importedcontent/CMakeLists.txt")
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/importedcontent)
 endif()
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/holidays.txt
+    ${CMAKE_BINARY_DIR}/bin/holidays.txt
+    COPYONLY
+)
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/school_diary.txt
+    ${CMAKE_BINARY_DIR}/bin/school_diary.txt
+    COPYONLY
+)
 
-
+configure_file(
+    ${CMAKE_SOURCE_DIR}/planner.txt
+    ${CMAKE_BINARY_DIR}/bin/planner.txt
+    COPYONLY
+) #Why does this break cmake?
 
 find_package(KF6 REQUIRED COMPONENTS
     Kirigami
     I18n
     CoreAddons
-
     IconThemes
 )
 
@@ -58,9 +71,6 @@ qt_add_qml_module(appMaKr0Hard_Planner_4
         SOURCES func_class.h func_class.cpp
         RESOURCES LICENSE
         RESOURCES README.md
-
-
-
 )
 
 
@@ -76,23 +86,7 @@ set_target_properties(appMaKr0Hard_Planner_4 PROPERTIES
 
 )
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/holidays.txt
-    ${CMAKE_BINARY_DIR}/bin/holidays.txt
-    COPYONLY
-)
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/school_diary.txt
-    ${CMAKE_BINARY_DIR}/bin/school_diary.txt
-    COPYONLY
-)
-
-configure_file(
-    ${CMAKE_SOURCE_DIR}/planner.txt
-    ${CMAKE_BINARY_DIR}/bin/planner.txt
-    COPYONLY
-)
 
 target_link_libraries(appMaKr0Hard_Planner_4
     PRIVATE Qt6::Quick
@@ -112,5 +106,4 @@ install(TARGETS appMaKr0Hard_Planner_4
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
 

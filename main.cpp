@@ -16,5 +16,6 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.loadFromModule("MaKr0Hard_Planner_4", "Main");
 
+
     return QGuiApplication::exec();
 }
