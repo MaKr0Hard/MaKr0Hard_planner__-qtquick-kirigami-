@@ -185,11 +185,32 @@ Kirigami.ApplicationWindow {
                         }
                         onClicked: {pageStack.layers.push(more_holidays)}
                     }
+                    Kirigami.AbstractCard {
+                        Component.onCompleted: {
+                            var jsonString = functions.get_json_elements("exams.txt");
+
+                            var items = JSON.parse(jsonString);
+                            label_exam_name.text = items[0].name;
+                            label_days_before_exam.text = functions.number_of_days_before_timestamp(items[0].timestamp);
+                        }
+
+                        contentItem: ColumnLayout {
+                            RowLayout {
+                                Controls.Label {
+                                    text: "Days until"
+                                }
+                                Controls.Label {
+                                    id: label_exam_name
+                                }
+                            }
+                            Controls.Label {
+                                id: label_days_before_exam
+                                font.pixelSize: 36;
+                            }
+                        }
+                    }
                 }
-
             }
-
-
         }
     }
 
@@ -355,18 +376,20 @@ Kirigami.ApplicationWindow {
                         }
 
                     }
-                }
-                Controls.Button {
-                    text: "pls clk"
-                    onClicked: {functions.save_to_json("hii", 50, "hiiii", "holidays.txt");
-                        var jsonString = functions.get_json_elements("holidays.txt");
 
-                        var items = JSON.parse(jsonString);
-                        listModel_more_holid.clear();
-                        // Populate the ListModel
-                        for (var i = 0; i < items.length; i++) {
-                            listModel_more_holid.append(items[i])
-                        }
+                }
+
+                Kirigami.OverlaySheet {
+                    id: add_event_sheet
+
+                }
+            }
+            footer: ColumnLayout {
+                    Controls.Button {
+                    text: "Add event"
+
+                    onClicked: {
+                        add_event_sheet.open()
                     }
                 }
             }

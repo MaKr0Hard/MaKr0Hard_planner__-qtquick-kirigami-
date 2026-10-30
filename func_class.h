@@ -14,13 +14,16 @@ typedef struct {
     int year;
 } Holiday;
 
+
 class Func_class : public QObject
 {
     Q_OBJECT
 public:
+    Holiday winter_exams = {.name = QString::fromStdString("Winter exams"), .day = 10, .month = 12, .year = 2026};
+
     explicit Func_class(QObject *parent = nullptr);
     Q_INVOKABLE void print_smth(QString str);
-    Q_INVOKABLE QVector<QString> get_events();
+    //Q_INVOKABLE QVector<QString> get_events();
     Q_INVOKABLE int dayOfMonth();
     Q_INVOKABLE int number_of_days_before_holiday();
     Q_INVOKABLE int month();
@@ -37,7 +40,7 @@ public:
     Q_INVOKABLE int month_from_timestamp(long timestamp);
     Q_INVOKABLE int year_from_timestamp(long timestamp);
     Q_INVOKABLE void save_to_json(QString name, long timestamp, QString description, QString filename);
-    Q_INVOKABLE void save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study);
+    //Q_INVOKABLE void save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study);
     Q_INVOKABLE int number_of_days_before_timestamp(long timestamp);
 //signals:
 

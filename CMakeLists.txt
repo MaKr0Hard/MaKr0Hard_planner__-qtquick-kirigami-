@@ -37,6 +37,12 @@ configure_file(
 )
 
 configure_file(
+    ${CMAKE_SOURCE_DIR}/exams.txt
+    ${CMAKE_BINARY_DIR}/bin/exams.txt
+    COPYONLY
+)
+
+configure_file(
     ${CMAKE_SOURCE_DIR}/planner.txt
     ${CMAKE_BINARY_DIR}/bin/planner.txt
     COPYONLY
@@ -71,6 +77,7 @@ qt_add_qml_module(appMaKr0Hard_Planner_4
         SOURCES func_class.h func_class.cpp
         RESOURCES LICENSE
         RESOURCES README.md
+        RESOURCES exams.txt
 )
 
 

@@ -7,20 +7,17 @@
 #include <sstream>
 #include <nlohmann/json.hpp>
 
-std::string readFileContents(const std::string& filePath) {
+std::string readFileContents(const std::string& filePath) {//TODO : move to file to file io class
     std::ifstream file(filePath);
 
-    // Check if the file was successfully opened
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file " << filePath << std::endl;
         return "";
     }
 
-    // Read the file's buffer into a stringstream
     std::ostringstream buffer;
     buffer << file.rdbuf();
     file.close();
-    // Convert the stringstream buffer to a std::string
     return buffer.str();
 }
 
@@ -30,11 +27,11 @@ Func_class::Func_class(QObject *parent)
 
 }
 
-void Func_class::print_smth(QString str) {
+void Func_class::print_smth(QString str) {//TODO : remove
     std::cout << str.toStdString() << "\n";
 }
 
-QVector<QString> Func_class::get_events() {
+/*QVector<QString> Func_class::get_events() {
     std::string json_text = R"({"numbers": [10, 20, 30, 40]})";
     std::string hello = "hello";
     //json data = json::parse(json_text);
@@ -43,7 +40,7 @@ QVector<QString> Func_class::get_events() {
     vect.append(QString::fromStdString(hello));
     vect.append(QString::fromStdString(hi));
     return vect;
-}
+}*/
 
 int Func_class::dayOfMonth() {
     std::time_t t = std::time(nullptr);
@@ -106,7 +103,7 @@ int Func_class::year_from_timestamp(long timestamp) {
     return year;
 }
 
-QVector<Holiday> Func_class::get_all_holidays() {//TODO: delete ?
+QVector<Holiday> Func_class::get_all_holidays() {//TODO: delete ? //TODO: move to file io class
     QVector<Holiday> holidays;
     holidays.push_back(Holiday{QString::fromStdString("Halloween"), 19, 10, 2026});
     QVector<Holiday> holidays_filtered;
@@ -141,14 +138,15 @@ int Func_class::year_holiday(Holiday holiday) {
     return holiday.year;
 }
 
-QString Func_class::get_json_of_all_holidays() {
+QString Func_class::get_json_of_all_holidays() {//TODO: move to json class
     return QString::fromStdString(readFileContents("holidays.txt"));
 }
 
-QString Func_class::get_json_elements(QString filename) {//TODO: rename
+QString Func_class::get_json_elements(QString filename) {//TODO: rename and move to json class
     std::string json = readFileContents(filename.toStdString());
 
     nlohmann::json j = nlohmann::json::parse(json);
+    std::time_t t = std::time(nullptr);
     std::sort(j.begin(), j.end(), [](const nlohmann::json& a, const nlohmann::json& b) {
         return a["timestamp"] < b["timestamp"];
     });
@@ -156,7 +154,7 @@ QString Func_class::get_json_elements(QString filename) {//TODO: rename
     return QString::fromStdString(output);//TODO: use the json string instead to not waste ram
 }
 
-void Func_class::save_to_json(QString name, long timestamp, QString description, QString filename) {//TODO: rename
+void Func_class::save_to_json(QString name, long timestamp, QString description, QString filename) {//TODO: rename and move to file io class
     nlohmann::json json = nlohmann::json::parse(readFileContents(filename.toStdString()));
     nlohmann::json newElement = {
         {"name", name.toStdString()},
@@ -172,7 +170,7 @@ void Func_class::save_to_json(QString name, long timestamp, QString description,
     write_to_file(filename.toStdString(), json.dump(4));
 }
 
-void Func_class::save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study) {
+/*void Func_class::save_to_planner(QString name, long timestamp, QString description, int priority, QString subject, long time_needed_to_study) {
     QString filename = QString::fromStdString("planner.txt");
     nlohmann::json json = nlohmann::json::parse(readFileContents(filename.toStdString()));
     nlohmann::json newElement = {
@@ -190,9 +188,9 @@ void Func_class::save_to_planner(QString name, long timestamp, QString descripti
     // Print the updated JSON
     std::cout << json.dump(4) << std::endl;
     write_to_file(filename.toStdString(), json.dump(4));
-}
+}*/
 
-void Func_class::write_to_file(std::string filename, std::string stuff) {
+void Func_class::write_to_file(std::string filename, std::string stuff) {//TODO: Move to file io class
 
 
     // Open the file in output mode (default: std::ios::out)
@@ -214,3 +212,4 @@ void Func_class::write_to_file(std::string filename, std::string stuff) {
     std::cout << "File " << filename << " has been created or overwritten." << std::endl;
     return;
 }
+
